@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    <p class="navbar-text navbar-right">
+        {{ date }}
+    </p>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-md-6 col-md-offset-3 column" style="padding-bottom: 20px;margin-top: 10px;">
+            <form action="" method="post" id="search-form">
+                {% csrf_token %}
+                <div class="input-group input-group-sm">
+                    {{ search.q.errors }}
+                    {{ search.q }}
+                    <span class="input-group-btn">
+                        <button class="btn btn-search" type="submit">Поиск</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column posts">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block forma_vvoda %}
+
+    <div class="page-header">
+        <h1 align="center">Добавить нового клиента</h1>
+    </div>
+
+
+    <form method="POST" action="create/">
+
+        {% csrf_token %}
+
+        <table class="well well-see" width=97%">
+            <thead>
+                <th>№ пут. листа</th>
+                <th>ФИО клиента</th>
+                <th>Дата С</th>
+                <th>Дата ПО</th>
+                <th>Организация</th>
+                <th>№ каб. врача</th>
+            </thead>
+            <tr align="center">
+                <td>{{ forma_v.number }}</td>
+                <td>{{ forma_v.full_name }}</td>
+                <td><input type="date" name="date_in" value="{{ date | date:"Y-m-d" }}"/></td>
+                <td><input type="date" name="date_out" value="{{ date | date:"Y-m-d" }}"/></td>
+                <td>{{ forma_v.company }}</td>
+                <td>{{ forma_v.cab_number }}</td>
+            </tr>
+            <thead class="string">
+            <th colspan="6"></th>
+            </thead>
+            <thead>
+                <th>Год рождения</th>
+                <th>Паспорт / Пенсионное</th>
+                <th>Домашний адрес</th>
+                <th>Досрочный выезд</th>
+                <th>Черн список</th>
+                <th>Комментарий</th>
+            </thead>
+            <tr>
+                <td><input type="date" name="birth_year" value="{{ date | date:"Y-m-d" }}"/></td>
+                <td>{{ forma_v.passport }}</td>
+                <td>{{ forma_v.address }}</td>
+                <td><input type="date" name="early_departure" value="{{ date | date:"Y-m-d" }}"/></td>
+                <td>{{ forma_v.black_list }}</td>
+                <td>{{ forma_v.note }}</td>
+            </tr>
+            <thead>
+                <th>Комната клиента</th>
+                <th>Номер телефона</th>
+                <th>Пол</th>
+                <th>Группа</th>
+                <th>Оплата от клиента</th>
+                <th></th>
+            </thead>
+            <tr>
+                <td>{{ forma_v.room }}</td>
+                <td>{{ forma_v.phone }}</td>
+                <td>{{ forma_v.male }}</td>
+                <td>{{ forma_v.group }}</td>
+                <td>{{ forma_v.pay }}</td>
+                <td></td>
+            </tr>
+        </table>
+        <input type="submit" value="Сохранить" class="btn btn-default  btn-lg btn-block btn_sub">
+    </form>
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock %}
+
+{% block list %}
+
+    <div class="page-header">
+        <h1 align="center">Список из базы данных <small> всего: {{ people.count }} строк</small></h1>
+    </div>
+
+    <form method="POST" action="filter/">
+        {% csrf_token %}
+        <div align="center">
+            <h2 style="display:inline-block;"><b><em>Фильтр по критериям:  &nbsp;  </em></b></h2>
+            <h3 style="display:inline-block;">Пол: <span class="label">{{ filter.male }}</span></h3>
+            <h3 style="display:inline-block;">Группа: <span class="label">{{ filter.group }}</span></h3>
+            <h3 style="display:inline-block;">Оплата: <span class="label">{{ filter.pay }}</span></h3>
+{#            <h3 style="display:inline-block;">Месяц: <span class="label">{{ filter.mouth }}</span></h3>#}
+
+{#            <h3 style="display:inline-block;">Дата С: </h3><input type="date" name="date_in" value="{{ date | date:"Y-m-d" }}"/>#}
+{#            <h3 style="display:inline-block;">Дата ПО: </h3><input type="date" name="date_out" value="{{ date | date:"Y-m-d" }}"/>#}
+
+            <input style="display:inline-block;" type="submit" value="Фильтр" class="btn btn-default btn-sflilter">
+        </div>
+    </form>
+    <hr>
+
+    {% for post in people %}
+
+        <table class="well" width="97%">
+            <thead>
+                <th width="11%">№ пут. листа</th>
+                <th width="11%">ФИО клиента</th>
+                <th width="11%">Дата С</th>
+                <th width="11%">Дата ПО</th>
+                <th width="11%">Организация</th>
+                <th width="11%">№ каб. врача</th>
+                <th width="11%">Год рождения</th>
+                <th width="11%">Паспорт / Пенсионное</th>
+                <th width="11%">Домашний адрес</th>
+            </thead>
+
+            <tr>
+                <td>{{ post.number }}</td>
+                <td><b>{{ post.full_name }}</b></td>
+                <td>{{ post.date_in }}</td>
+                <td>{{ post.date_out }}</td>
+                <td>{{ post.company }}</td>
+                <td>{{ post.cab_number }}</td>
+                <td>{{ post.birth_year }}</td>
+                <td>{{ post.passport }}</td>
+                <td>{{ post.address }}</td>
+            </tr>
+
+            <thead>
+                <th>Досрочный выезд</th>
+                <th>Черн список</th>
+                <th>Комментарий</th>
+                <th>Комната клиента</th>
+                <th>Номер телефона</th>
+                <th>Пол</th>
+                <th>Группа</th>
+                <th>Оплата от клиента</th>
+                <th class="dell" width="10px" height="10px"><a class="delete-a" href="delete/{{ post.id }}">Удалить</a></th>
+            </thead>
+
+            <tr>
+                <td>{{ post.early_departure }}</td>
+                <td>{{ post.black_list }}</td>
+                <td>{{ post.note }}</td>
+                <td>{{ post.room }}</td>
+                <td>{{ post.phone }}</td>
+                <td>{{ post.male }}</td>
+                <td>{{ post.group }}</td>
+                <td>{{ post.pay }}</td>
+                <td><a href="edit/{{ post.id }}">Изменить</a> <a href="copy/{{ post.id }}">Копировать</a></td>
+            </tr>
+        </table>
+    {% endfor %}
+
+{% endblock %}
+
+

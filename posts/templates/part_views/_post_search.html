@@ -1,0 +1,67 @@
+<div class="col-md-12 column">
+    <div class="page-header">
+        <h2 align="center">Результаты поиска: <b><em>{{ q }}</em></b></h2>
+        <h5 align="center"><a href="/" class="delete-a">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            отмена
+        </a></h5>
+    </div>
+    {% for post in posts %}
+        <table class="well" width="97%">
+            <thead>
+                <th width="11%">№ пут. листа</th>
+                <th width="11%">ФИО клиента</th>
+                <th width="11%">Дата С</th>
+                <th width="11%">Дата ПО</th>
+                <th width="11%">Организация</th>
+                <th width="11%">№ каб. врача</th>
+                <th width="11%">Год рождения</th>
+                <th width="11%">Паспорт / Пенсионное</th>
+                <th width="11%">Домашний адрес</th>
+            </thead>
+
+            <tr>
+                <td>{{ post.number }}</td>
+                <td><b>{{ post.full_name }}</b></td>
+                <td>{{ post.date_in }}</td>
+                <td>{{ post.date_out }}</td>
+                <td>{{ post.company }}</td>
+                <td>{{ post.cab_number }}</td>
+                <td>{{ post.birth_year }}</td>
+                <td>{{ post.passport }}</td>
+                <td>{{ post.address }}</td>
+            </tr>
+
+            <thead>
+                <th>Досрочный выезд</th>
+                <th>Черн список</th>
+                <th>Комментарий</th>
+                <th>Комната клиента</th>
+                <th>Номер телефона</th>
+                <th>Пол</th>
+                <th>Группа</th>
+                <th>Оплата от клиента</th>
+                <th class="dell" width="10px" height="10px"><a class="delete-a" href="delete/{{ post.id }}">Удалить</a></th>
+            </thead>
+
+            <tr>
+                <td>{{ post.early_departure }}</td>
+                <td>{{ post.black_list }}</td>
+                <td>{{ post.note }}</td>
+                <td>{{ post.room }}</td>
+                <td>{{ post.phone }}</td>
+                <td>{{ post.male }}</td>
+                <td>{{ post.group }}</td>
+                <td>{{ post.pay }}</td>
+                <td><a href="edit/{{ post.id }}">Изменить</a> <a href="copy/{{ post.id }}">Копировать</a></td>
+            </tr>
+        </table>
+    {% endfor %}
+
+    {% if not posts %}
+        <div class="page-header">
+            <h1 align="center">ФИО не найденно</h1>
+        </div>
+    {% endif %}
+
+</div>

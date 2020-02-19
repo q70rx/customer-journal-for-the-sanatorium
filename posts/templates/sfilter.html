@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    <p class="navbar-text navbar-right">
+        {{ date }}
+    </p>
+{% endblock %}
+
+
+
+{% block sfilter %}
+
+    <style>
+
+        @media print {
+            form {
+                display: none;
+            }
+
+            .print-doc {
+                display: none;
+            }
+
+            .navbar-brand {
+                display: none;
+            }
+        }
+
+    </style>
+
+    <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Вурнуться
+        на главную:</a>
+
+    <div class="col-md-12 column">
+        <div class="page-header">
+
+            <form method="POST" action="../filter/">
+                {% csrf_token %}
+                <div align="center">
+                    <h2 style="display:inline-block;"><b><em>Фильтр по критериям: &nbsp; </em></b></h2>
+
+                    <h3 style="display:inline-block;">
+                        Пол:
+                        <span class="label">
+                           <select name="male" id="male">
+                                <option value="Все" {% if male == 'Все' %} selected {% endif %}>
+                                    Все
+                                </option>
+                                <option value="Мужской" {% if male == 'Мужской' %} selected {% endif %}>
+                                    Мужской
+                                </option>
+                                <option value="Женский"{% if male == 'Женский' %} selected {% endif %}>
+                                    Женский
+                                </option>
+                            </select>
+                        </span>
+                    </h3>
+
+                    <h3 style="display:inline-block;">
+                        Группа:
+                        <span class="label">
+                            <select name="group" id="group">
+                                <option value="Все"{% if group == 'Все' %} selected {% endif %}>
+                                    Все
+                                </option>
+                                <option value="Неизвестно"{% if group == 'Неизвестно' %} selected {% endif %}>
+                                    Неизвестно
+                                </option>
+                                <option value="Пенсионер"{% if group == 'Пенсионер' %} selected {% endif %}>
+                                    Пенсионер
+                                </option>
+                                <option value="Инвалид"{% if group == 'Инвалид' %} selected {% endif %}>
+                                    Инвалид
+                                </option>
+                                <option value="Глухонемой"{% if group == 'Глухонемой' %} selected {% endif %}>
+                                    Глухонемой
+                                </option>
+                                <option value="Общество слепых"{% if group == 'Общество слепых' %} selected {% endif %}>
+                                    Общество слепых
+                                </option>
+                            </select>
+                        </span>
+                    </h3>
+
+                    <h3 style="display:inline-block;">
+                        Оплата:
+                        <span class="label">
+                            <select name="pay" id="pay">
+                                <option value="Все"{% if pay == 'Все' %} selected {% endif %}>
+                                    Все
+                                </option>
+                                <option value="Неизвестно"{% if pay == 'Неизвестно' %} selected {% endif %}>
+                                    Неизвестно
+                                </option>
+                                <option value="Бюджет"{% if pay == 'Бюджет' %} selected {% endif %}>
+                                    Бюджет
+                                </option>
+                                <option value="Наличка"{% if pay == 'Наличка' %} selected {% endif %}>
+                                    Наличка
+                                </option>
+                                <option value="Перечисление"{% if pay == 'Перечисление' %} selected {% endif %}>
+                                    Перечисление
+                                </option>
+                            </select>
+                        </span>
+                    </h3>
+
+{#                    <h3 style="display:inline-block;">#}
+{#                        Месяц:#}
+{#                        <span class="label">#}
+{#                            <select name="mouth" id="mouth">#}
+{#                                <option value="Все"{% if mouth == 'Все' %} selected {% endif %}>#}
+{#                                    Все#}
+{#                                </option>#}
+{#                                <option value="01"{% if mouth == '01' %} selected {% endif %}>#}
+{#                                    Январь#}
+{#                                </option>#}
+{#                                <option value="02"{% if mouth == '02' %} selected {% endif %}>#}
+{#                                    Февраль#}
+{#                                </option>#}
+{#                                <option value="03"{% if mouth == '03' %} selected {% endif %}>#}
+{#                                    Март#}
+{#                                </option>#}
+{#                                <option value="04"{% if mouth == '04' %} selected {% endif %}>#}
+{#                                    Апрель#}
+{#                                </option>#}
+{#                                <option value="05"{% if mouth == '05' %} selected {% endif %}>#}
+{#                                    Май#}
+{#                                </option>#}
+{#                                <option value="06"{% if mouth == '06' %} selected {% endif %}>#}
+{#                                    Июнь#}
+{#                                </option>#}
+{#                                <option value="07"{% if mouth == '07' %} selected {% endif %}>#}
+{#                                    Июль#}
+{#                                </option>#}
+{#                                <option value="08"{% if mouth == '08' %} selected {% endif %}>#}
+{#                                    Август#}
+{#                                </option>#}
+{#                                <option value="09"{% if mouth == '09' %} selected {% endif %}>#}
+{#                                    Сентярь#}
+{#                                </option>#}
+{#                                <option value="10"{% if mouth == '10' %} selected {% endif %}>#}
+{#                                    Октябрь#}
+{#                                </option>#}
+{#                                <option value="11"{% if mouth == '11' %} selected {% endif %}>#}
+{#                                    Ноябрь#}
+{#                                </option>#}
+{#                                <option value="12"{% if mouth == '12' %} selected {% endif %}>#}
+{#                                    Декабрь#}
+{#                                </option>#}
+{#                            </select>#}
+{#                        </span>#}
+{#                    </h3>#}
+
+
+
+                    <input style="display:inline-block;" type="submit" value="Фильтр"
+                           class="btn btn-default btn-sflilter">
+                </div>
+            </form>
+
+            <h2 align="center">Список клиентов по категориям: <small> всего: {{ posts_all.count }} строк</small></h2>
+            <div align="center">
+                {% if male != 'Все' %}
+                    <h3 style="display:inline-block;">Пол: <span class="label label-primary">{{ male }}</span></h3>
+                {% endif %}
+
+                {% if group != 'Все' %}
+                    <h3 style="display:inline-block;">Группа: <span class="label label-primary">{{ group }}</span></h3>
+                {% endif %}
+
+                {% if pay != 'Все' %}
+                    <h3 style="display:inline-block;">Оплата: <span class="label label-primary">{{ pay }}</span></h3>
+                {% endif %}
+
+{#                {% if mouth != 'Все' %}#}
+{#                    <h3 style="display:inline-block;">Месяц: <span class="label label-primary">{{ mouth }}</span></h3>#}
+{#                {% endif %}#}
+            </div>
+        </div>
+        {% for post in posts %}
+            <table class="well" width="97%">
+                <thead>
+                <th width="11%">ФИО клиента</th>
+                <th width="11%">Дата С</th>
+                <th width="11%">Дата ПО</th>
+                <th width="11%">Организация</th>
+                <th width="11%">№ каб. врача</th>
+                <th width="11%">№ пут. листа</th>
+                <th width="11%">Год рождения</th>
+                <th width="11%">Паспорт / Пенсионное</th>
+                <th width="11%">Домашний адрес</th>
+                </thead>
+
+                <tr>
+                    <td><b>{{ post.full_name }}</b></td>
+                    <td>{{ post.date_in }}</td>
+                    <td>{{ post.date_out }}</td>
+                    <td>{{ post.company }}</td>
+                    <td>{{ post.cab_number }}</td>
+                    <td>{{ post.number }}</td>
+                    <td>{{ post.birth_year }}</td>
+                    <td>{{ post.passport }}</td>
+                    <td>{{ post.address }}</td>
+                </tr>
+
+                <thead>
+                <th>Досрочный выезд</th>
+                <th>Черн список</th>
+                <th>Комментарий</th>
+                <th>Комната клиента</th>
+                <th>Номер телефона</th>
+                <th>Пол</th>
+                <th>Группа</th>
+                <th>Оплата от клиента</th>
+                <th class="dell" width="10px" height="10px"><a class="delete-a print-doc"
+                                                               href="../delete/{{ post.id }}">Удалить</a></th>
+                </thead>
+
+                <tr>
+                    <td>{{ post.early_departure }}</td>
+                    <td>{{ post.black_list }}</td>
+                    <td>{{ post.note }}</td>
+                    <td>{{ post.room }}</td>
+                    <td>{{ post.phone }}</td>
+                    <td>{{ post.male }}</td>
+                    <td>{{ post.group }}</td>
+                    <td>{{ post.pay }}</td>
+                    <td>
+                        <a href="../edit/{{ post.id }}" class="print-doc">Изменить</a>
+                        <a href="../copy/{{ post.id }}" class="print-doc">Копировать</a>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+        <a class="print-doc btn btn-default btn-lg btn-block btn_sub" href="javascript:(print());">Распечатать весь
+            список</a>
+        {% if not posts %}
+            <div class="page-header">
+                <h1 align="center">ФИО не найденно</h1>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

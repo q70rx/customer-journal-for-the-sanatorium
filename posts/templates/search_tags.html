@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/tag_suggestion.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-md-6 col-md-offset-3 column" style="margin-top: 100px;">
+            <form action="" method="post" id="search-form" autocomplete="off">
+                {% csrf_token %}
+                <div class="input-group input-group-sm">
+                    <div class="tag-suggestion">
+                    {{ searchtag.q.errors }}
+                    {{ searchtag.q }}
+                    </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-search" type="submit">Поиск</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column posts">
+
+            {% for tag in tags %}
+                {{ tag }}
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/typahead.js' %}"></script>
+    <script src="{% static 'js/search_tag.js' %}"></script>
+
+{% endblock %}
+
+
+

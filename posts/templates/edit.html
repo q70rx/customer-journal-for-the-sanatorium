@@ -1,0 +1,143 @@
+<title>Редактирование клиента</title>
+{% extends 'base.html' %}
+
+{% block navbar %}
+    <p class="navbar-text navbar-left">
+        <i class="glyphicon glyphicon-user"></i> {{ person.full_name }}
+    </p>
+    <p class="navbar-text navbar-right">
+        {{ date }}
+    </p>
+
+{% endblock %}
+
+
+{% block forma_vvoda %}
+    <style>
+        .page-header {
+            display: none;
+        }
+
+        .p1age-header {
+            padding-bottom: 9px;
+            margin: 40px 0 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        td, th {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+    </style>
+
+    <div class="p1age-header">
+        <h1 align="center">Редактирование клиента:<br><b> <em>{{ person.full_name }}</em></b></h1>
+    </div>
+
+    <form method="POST" action="">
+
+        {% csrf_token %}
+
+        <table class="well" width="97%">
+            <thead>
+            <th width="50px">№ пут. листа</th>
+            <th>ФИО клиента</th>
+            <th>Дата С</th>
+            <th>Дата ПО</th>
+            <th>Организация</th>
+            <th>№ каб. врача</th>
+            </thead>
+
+            <tr align="center">
+                <td><input type="text" name="number" maxlength="20" value="{{ person.number }}"/></td>
+                <td><input type="text" name="full_name" maxlength="100" value="{{ person.full_name }}"/></td>
+                <td><input type="date" name="date_in" value="{{ person.date_in | date:"Y-m-d" }}"/></td>
+                <td><input type="date" name="date_out" value="{{ person.date_out | date:"Y-m-d" }}"/></td>
+                <td><input type="text" name="company" maxlength="50" value="{{ person.company }}"/></td>
+                <td><input type="text" name="cab_number" maxlength="5" value="{{ person.cab_number }}"/></td>
+            </tr>
+            <thead class="string">
+            <th colspan="6"></th>
+            </thead>
+
+
+            <thead>
+            <th>Год рождения</th>
+            <th>Паспорт / Пенсионное</th>
+            <th>Домашний адрес</th>
+            <th>Досрочный выезд</th>
+            <th>Черн список</th>
+            <th>Комментарий</th>
+            </thead>
+            <tr>
+                <td><input type="text" name="birth_year" maxlength="12" value="{{ person.birth_year }}"/></td>
+                <td><input type="text" name="passport" maxlength="50" value="{{ person.passport }}"/></td>
+                <td><input type="text" name="address" maxlength="200" value="{{ person.address }}"/></td>
+                <td><input type="date" name="early_departure" value="{{ person.early_departure | date:"Y-m-d" }}"/></td>
+                <td>
+                    <select name="black_list" id="id_black_list">
+                        <option value="Неизвестно"{% if person.pay == 'Неизвестно' %} selected {% endif %}>Неизвестно
+                        </option>
+                        <option value="Белый"{% if person.pay == 'Белый' %} selected {% endif %}>Белый</option>
+                        <option value="Черный"{% if person.pay == 'Черный' %} selected {% endif %}>Черный</option>
+                    </select>
+                </td>
+                <td><input type="text" name="note" maxlength="500" value="{{ person.note }}"/></td>
+            </tr>
+
+            <thead>
+                <th>Комната клиента</th>
+                <th>Номер телефона</th>
+                <th>Пол</th>
+                <th>Группа</th>
+                <th>Оплата от клиента</th>
+                <th></th>
+            </thead>
+            <tr>
+                <td><input type="text" name="room" maxlength="10" value="{{ person.room }}"/></td>
+                <td><input type="text" name="phone" maxlength="20" value="{{ person.phone }}"/></td>
+                <td>
+                    <select name="male" id="male">
+                        <option value="Мужской" {% if person.male == 'Мужской' %} selected {% endif %}>Мужской</option>
+                        <option value="Женский"{% if person.male == 'Женский' %} selected {% endif %}>Женский</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="group" id="group">
+                        <option value="Неизвестно"{% if person.group == 'Неизвестно' %} selected {% endif %}>
+                            Неизвестно
+                        </option>
+                        <option value="Пенсионер"{% if person.group == 'Пенсионер' %} selected {% endif %}>
+                            Пенсионер
+                        </option>
+                        <option value="Инвалид"{% if person.group == 'Инвалид' %} selected {% endif %}>
+                            Инвалид
+                        </option>
+                        <option value="Глухонемой"{% if person.group == 'Глухонемой' %} selected {% endif %}>
+                            Глухонемой
+                        </option>
+                        <option value="Общество слепых"{% if person.group == 'Общество слепых' %} selected {% endif %}>
+                            Общество слепых
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select name="pay" id="pay">
+                        <option value="Неизвестно"{% if person.pay == 'Неизвестно' %} selected {% endif %}>Неизвестно</option>
+                        <option value="Бюджет"{% if person.pay == 'Бюджет' %} selected {% endif %}>Бюджет</option>
+                        <option value="Наличка"{% if person.pay == 'Наличка' %} selected {% endif %}>Наличка</option>
+                        <option value="Перечисление"{% if person.pay == 'Перечисление' %} selected {% endif %}>
+                            Перечисление
+                        </option>
+                    </select>
+                </td>
+                <td><a href="/" class="cancel">О т м е н а</a></td>
+            </tr>
+
+        </table>
+
+        <input type="submit" value="Сохранить изменения" class="btn btn-default btn-lg btn-block btn_sub">
+    </form>
+
+{% endblock %}

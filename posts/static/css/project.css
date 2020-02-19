@@ -1,0 +1,144 @@
+body {
+    padding-top: 70px;
+}
+
+a:hover {
+    text-decoration-line: none;
+}
+
+.navbar-inverse {
+    background-color: rgba(0, 149, 255, 0.36);
+    backdrop-filter: saturate(499%) blur(2px);
+    /*color: #474646;*/
+    border-color: #ffffff00;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #ffffff;
+}
+
+.navbar-inverse .navbar-brand:hover {
+    color: #0176de;
+}
+
+.navbar-right a {
+    color: #ffffff;
+}
+
+.navbar-right a:hover {
+    color: #0176de;
+}
+
+.input-group.input-group-sm {
+    margin-bottom: 10px;
+}
+
+.my_field {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+    margin: 10px 10px 10px 0;
+}
+
+th {
+    text-align: center;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.well-see > thead > tr > th {
+    font-size: 14px;
+}
+
+.string {
+    background-color: white;
+}
+
+.well {
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid;
+    border-color: grey;
+    border-radius: 10px;
+}
+
+.btn_sub {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #57d0ffbf;
+    border-color: #ffffff00;
+    font-family: inherit;
+    font-size: 25px;
+}
+
+.btn-sflilter {
+    background-color: #57d0ffbf;
+}
+
+.btn-sflilter:hover {
+    background-color: #01b5fb;
+}
+
+input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].btn-block {
+    width: 97%;
+    margin-left: 1.5%;
+    margin-right: 2%;
+}
+
+.btn_sub:hover {
+    background-color: #01b5fb;
+}
+
+.my_field {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+
+td > input, select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-left: 5px;
+    color: #0f607f;;
+}
+
+thead {
+    background-color: #9e989854;
+}
+
+tr:hover {
+    background-color: #9e98981f;
+}
+
+td, th {
+    text-align: center;
+    border: 1px solid #9e98982e;
+}
+
+.cancel {
+    color: #ff4f4f;
+    font-weight: 600;
+}
+
+.cancel:hover {
+    color: #ff000c;
+}
+
+.delete-a {
+    color: #ff4f4f;
+    font-weight: 600;
+}
+
+.delete-a:hover {
+    color: #ff000c;
+}
+
+@media print {
+    .page-header {
+        display: none;
+    }
+    .navbar-brand {
+        display: none;
+    }
+}
