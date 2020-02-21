@@ -1,0 +1,116 @@
+<title>Печать клиента</title>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    <p class="navbar-text navbar-left" style="margin-top: 18px;">
+        <i class="glyphicon glyphicon-user"></i> {{ person.full_name }}
+    </p>
+    <p class="navbar-text navbar-right">
+        {{ date }}
+    </p>
+
+{% endblock %}
+
+{% block content %}
+
+    <style>
+
+        @media print {
+            form {
+                display: none;
+            }
+
+            .print-doc {
+                display: none;
+            }
+
+            .navbar-brand {
+                display: none;
+            }
+
+            .page-header {
+                display: none;
+            }
+
+            .navbar-brand {
+                display: none;
+            }
+
+            a {
+                display: none;
+            }
+        }
+
+    </style>
+
+    <div class="p1age-header">
+        <h1 align="center"><br><b> <em>{{ person.full_name }}</em></b></h1>
+    </div><br><br>
+
+    <table class="well" width="97%">
+        <thead>
+        <th width="11%">№ пут. листа</th>
+        <th width="11%">ФИО клиента</th>
+        <th width="11%">Дата С</th>
+        <th width="11%">Дата ПО</th>
+        <th width="11%">Организация</th>
+        <th width="11%">№ каб. врача</th>
+        <th width="11%">Год рождения</th>
+        <th width="11%">Паспорт / Пенсионное</th>
+        <th width="11%">Домашний адрес</th>
+        </thead>
+
+        <tr>
+            <td>{{ person.number }}</td>
+            <td><b>{{ person.full_name }}</b></td>
+            <td>{{ person.date_in }}</td>
+            <td>{{ person.date_out }}</td>
+            <td>{{ person.company }}</td>
+            <td>{{ person.cab_number }}</td>
+            <td>{{ person.birth_year }}</td>
+            <td>{{ person.passport }}</td>
+            <td>{{ person.address }}</td>
+        </tr>
+
+        <thead>
+        <th>Досрочный выезд</th>
+        <th>Черн список</th>
+        <th>Комментарий</th>
+        <th>Комната клиента</th>
+        <th>Номер телефона</th>
+        <th>Пол</th>
+        <th>Группа</th>
+        <th>Оплата от клиента</th>
+        <td>
+            <a href="../../print_costumer/{{ person.id }}">Печать</a>&nbsp;&nbsp;
+            <a class="delete-a" href="../../delete/{{ person.id }}">Удалить</a>
+        </td>
+        </thead>
+
+        <tr>
+            <td>
+                {% if person.early_departure != None %}
+                    {{ person.early_departure }}
+                {% endif %}
+            </td>
+            <td>{{ person.black_list }}</td>
+            <td>{{ person.note }}</td>
+            <td>{{ person.room }}</td>
+            <td>{{ person.phone }}</td>
+            <td>{{ person.male }}</td>
+            <td>{{ person.group }}</td>
+            <td>{{ person.pay }}</td>
+            <td>
+                <a href="../../edit/{{ person.id }}">Изменить</a>
+                <a href="../../copy/{{ person.id }}">Копировать</a>
+            </td>
+        </tr>
+    </table>
+
+    <a class="print-doc btn btn-default btn-lg btn-block btn_sub" href="javascript:(print());">Распечатать</a>
+
+{% endblock %}
+
+
+

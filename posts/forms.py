@@ -35,7 +35,7 @@ class PostForm(forms.Form):
     birth_year = forms.CharField(max_length=12, widget=forms.TextInput(attrs={"class": "my_field"}))
     passport = forms.CharField(max_length=50, widget=forms.TextInput(attrs={"class": "my_field"}))
     address = forms.CharField(max_length=200, widget=forms.TextInput(attrs={"class": "my_field"}))
-    early_departure = forms.DateField(widget=SelectDateWidget, initial=date.today)
+    early_departure = forms.DateField(required=False, widget=SelectDateWidget, initial=date.today)
     black_list = forms.ChoiceField(choices=BLACK_LIST)
     note = forms.CharField(required=False, max_length=500, widget=forms.TextInput(attrs={"class": "my_field"}))
     room = forms.CharField(required=False, max_length=10, widget=forms.TextInput(attrs={"class": "my_field"}))
@@ -66,27 +66,11 @@ class PostFilter(forms.Form):
         ('Наличка', "Наличка"),
         ('Перечисление', "Перечисление"),
     ]
-    # MOUTH = [
-    #     ("Все", "Все"),
-    #     ('01', "Январь"),
-    #     ('02', "Февраль"),
-    #     ('03', "Март"),
-    #     ('04', "Апрель"),
-    #     ('05', "Май"),
-    #     ('06', "Июнь"),
-    #     ('07', "Июль"),
-    #     ('08', "Август"),
-    #     ('09', "Сентябрь"),
-    #     ('10', "Октябрь"),
-    #     ('11', "Ноябрь"),
-    #     ('12', "Декабрь"),
-    # ]
-    # date_in = forms.DateField(widget=SelectDateWidget, initial=date.today, help_text='Дата С')
-    # date_out = forms.DateField(widget=SelectDateWidget, initial=date.today, help_text='Дата ПО')
     male = forms.ChoiceField(choices=MALE)
     group = forms.ChoiceField(choices=GROUP)
     pay = forms.ChoiceField(choices=PAY)
-    # mouth = forms.ChoiceField(choices=MOUTH)
+    date_in = forms.DateField(widget=SelectDateWidget, required=False)
+    date_out = forms.DateField(widget=SelectDateWidget, required=False)
 
 
 class SearchForm(forms.Form):

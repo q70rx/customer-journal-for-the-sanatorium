@@ -1,3 +1,4 @@
+<title>Фильтр клиентов</title>
 {% extends 'base.html' %}
 {% load static %}
 
@@ -6,8 +7,6 @@
         {{ date }}
     </p>
 {% endblock %}
-
-
 
 {% block sfilter %}
 
@@ -35,10 +34,10 @@
     <div class="col-md-12 column">
         <div class="page-header">
 
-            <form method="POST" action="../filter/">
+            <form method="GET" action="../filter/">
                 {% csrf_token %}
-                <div align="center">
-                    <h2 style="display:inline-block;"><b><em>Фильтр по критериям: &nbsp; </em></b></h2>
+                <div align="center" style="margin-top: -50px">
+                    <h1 style="display:inline-block;"><b><em>Фильтр по критериям: &nbsp; </em></b></h1> <br>
 
                     <h3 style="display:inline-block;">
                         Пол:
@@ -105,58 +104,22 @@
                             </select>
                         </span>
                     </h3>
+                    <br>
+                    <h3 style="display:inline-block;">
+                        Дата С:
+                        <input class="my_field" style="width: 150px; font-size: 17px; color: #0f607f; font-weight: bold;" type="date" name="date_in" value="{{ date_in | date:"Y-m-d" }}"/>
+                    </h3>
 
-{#                    <h3 style="display:inline-block;">#}
-{#                        Месяц:#}
-{#                        <span class="label">#}
-{#                            <select name="mouth" id="mouth">#}
-{#                                <option value="Все"{% if mouth == 'Все' %} selected {% endif %}>#}
-{#                                    Все#}
-{#                                </option>#}
-{#                                <option value="01"{% if mouth == '01' %} selected {% endif %}>#}
-{#                                    Январь#}
-{#                                </option>#}
-{#                                <option value="02"{% if mouth == '02' %} selected {% endif %}>#}
-{#                                    Февраль#}
-{#                                </option>#}
-{#                                <option value="03"{% if mouth == '03' %} selected {% endif %}>#}
-{#                                    Март#}
-{#                                </option>#}
-{#                                <option value="04"{% if mouth == '04' %} selected {% endif %}>#}
-{#                                    Апрель#}
-{#                                </option>#}
-{#                                <option value="05"{% if mouth == '05' %} selected {% endif %}>#}
-{#                                    Май#}
-{#                                </option>#}
-{#                                <option value="06"{% if mouth == '06' %} selected {% endif %}>#}
-{#                                    Июнь#}
-{#                                </option>#}
-{#                                <option value="07"{% if mouth == '07' %} selected {% endif %}>#}
-{#                                    Июль#}
-{#                                </option>#}
-{#                                <option value="08"{% if mouth == '08' %} selected {% endif %}>#}
-{#                                    Август#}
-{#                                </option>#}
-{#                                <option value="09"{% if mouth == '09' %} selected {% endif %}>#}
-{#                                    Сентярь#}
-{#                                </option>#}
-{#                                <option value="10"{% if mouth == '10' %} selected {% endif %}>#}
-{#                                    Октябрь#}
-{#                                </option>#}
-{#                                <option value="11"{% if mouth == '11' %} selected {% endif %}>#}
-{#                                    Ноябрь#}
-{#                                </option>#}
-{#                                <option value="12"{% if mouth == '12' %} selected {% endif %}>#}
-{#                                    Декабрь#}
-{#                                </option>#}
-{#                            </select>#}
-{#                        </span>#}
-{#                    </h3>#}
+                    <h3 style="display:inline-block;">
+                        Дата ПО:
+                        <input class="my_field" style="width: 150px; font-size: 17px; color: #0f607f; font-weight: bold;" type="date" name="date_out" value="{{ date_out | date:"Y-m-d" }}"/>
+                    </h3>
 
-
-
-                    <input style="display:inline-block;" type="submit" value="Фильтр"
-                           class="btn btn-default btn-sflilter">
+                    <input style="display:inline-block;" type="submit" value="Фильтр" class="btn btn-default btn-ok-filter">&nbsp;&nbsp;&nbsp;
+                    <a href="../filter/?csrfmiddlewaretoken=lLGtHFK7Ylai5IauUcatqiLTvBcNoeZA5R5QtCsHETbHi3WfGKlXuL6Wh1Y9EZi8&male=Все&group=Все&pay=Все&date_in=&date_out=">
+                        <input style="display:inline-block;" type="button" value="Отмена" class="btn btn-default btn-no-filter">
+                    </a>
+                    <hr>
                 </div>
             </form>
 
@@ -174,32 +137,39 @@
                     <h3 style="display:inline-block;">Оплата: <span class="label label-primary">{{ pay }}</span></h3>
                 {% endif %}
 
-{#                {% if mouth != 'Все' %}#}
-{#                    <h3 style="display:inline-block;">Месяц: <span class="label label-primary">{{ mouth }}</span></h3>#}
-{#                {% endif %}#}
+                {% if date_in %}
+                    <h3 style="display:inline-block;">Дата С: <span
+                            class="label label-primary">{{ date_in | date:"d.m.Y" }}</span></h3>
+                {% endif %}
+
+                {% if date_out %}
+                    <h3 style="display:inline-block;">Дата ПО: <span
+                            class="label label-primary">{{ date_out | date:"d.m.Y" }}</span></h3>
+                {% endif %}
+
             </div>
         </div>
         {% for post in posts %}
             <table class="well" width="97%">
                 <thead>
+                <th width="11%">№ пут. листа</th>
                 <th width="11%">ФИО клиента</th>
                 <th width="11%">Дата С</th>
                 <th width="11%">Дата ПО</th>
                 <th width="11%">Организация</th>
                 <th width="11%">№ каб. врача</th>
-                <th width="11%">№ пут. листа</th>
                 <th width="11%">Год рождения</th>
                 <th width="11%">Паспорт / Пенсионное</th>
                 <th width="11%">Домашний адрес</th>
                 </thead>
 
                 <tr>
+                    <td>{{ post.number }}</td>
                     <td><b>{{ post.full_name }}</b></td>
                     <td>{{ post.date_in }}</td>
                     <td>{{ post.date_out }}</td>
                     <td>{{ post.company }}</td>
                     <td>{{ post.cab_number }}</td>
-                    <td>{{ post.number }}</td>
                     <td>{{ post.birth_year }}</td>
                     <td>{{ post.passport }}</td>
                     <td>{{ post.address }}</td>
@@ -219,7 +189,11 @@
                 </thead>
 
                 <tr>
-                    <td>{{ post.early_departure }}</td>
+                    <td>
+                        {% if post.early_departure != None %}
+                            {{ post.early_departure }}
+                        {% endif %}
+                    </td>
                     <td>{{ post.black_list }}</td>
                     <td>{{ post.note }}</td>
                     <td>{{ post.room }}</td>
@@ -245,3 +219,6 @@
     </div>
 
 {% endblock %}
+
+
+<br><br><br>

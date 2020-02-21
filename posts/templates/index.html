@@ -61,7 +61,7 @@
                 <td>{{ forma_v.cab_number }}</td>
             </tr>
             <thead class="string">
-            <th colspan="6"></th>
+                <th colspan="6"></th>
             </thead>
             <thead>
                 <th>Год рождения</th>
@@ -75,7 +75,7 @@
                 <td><input type="date" name="birth_year" value="{{ date | date:"Y-m-d" }}"/></td>
                 <td>{{ forma_v.passport }}</td>
                 <td>{{ forma_v.address }}</td>
-                <td><input type="date" name="early_departure" value="{{ date | date:"Y-m-d" }}"/></td>
+                <td><input type="date" name="early_departure" value="{{ date }}"/></td>
                 <td>{{ forma_v.black_list }}</td>
                 <td>{{ forma_v.note }}</td>
             </tr>
@@ -112,22 +112,23 @@
         <h1 align="center">Список из базы данных <small> всего: {{ people.count }} строк</small></h1>
     </div>
 
-    <form method="POST" action="filter/">
+    <form method="GET" action="filter/">
         {% csrf_token %}
-        <div align="center">
-            <h2 style="display:inline-block;"><b><em>Фильтр по критериям:  &nbsp;  </em></b></h2>
-            <h3 style="display:inline-block;">Пол: <span class="label">{{ filter.male }}</span></h3>
-            <h3 style="display:inline-block;">Группа: <span class="label">{{ filter.group }}</span></h3>
-            <h3 style="display:inline-block;">Оплата: <span class="label">{{ filter.pay }}</span></h3>
-{#            <h3 style="display:inline-block;">Месяц: <span class="label">{{ filter.mouth }}</span></h3>#}
 
-{#            <h3 style="display:inline-block;">Дата С: </h3><input type="date" name="date_in" value="{{ date | date:"Y-m-d" }}"/>#}
-{#            <h3 style="display:inline-block;">Дата ПО: </h3><input type="date" name="date_out" value="{{ date | date:"Y-m-d" }}"/>#}
-
-            <input style="display:inline-block;" type="submit" value="Фильтр" class="btn btn-default btn-sflilter">
+        <div align="center" style="margin-top: -20px">
+            <h3 style="display:inline-block;"><b><em>Быстрый фильтр:</em></b></h3><br>
+            <h4 style="display:inline-block;">Пол: <span class="label">{{ filter.male }}</span></h4>
+            <h4 style="display:inline-block;">Группа: <span class="label">{{ filter.group }}</span></h4>
+            <h4 style="display:inline-block;">Оплата: <span class="label">{{ filter.pay }}</span></h4>
+            <h4 style="display:inline-block;">Дата С: </h4>
+            <input type="date" name="date_in" class="my_field" style="width: 150px; font-size: 15px; color: #0f607f; font-weight: bold;" value="{{ filter.date_in | date:"Y-m-d" }}"/>
+            <h4 style="display:inline-block;">Дата ПО: </h4>
+            <input type="date" name="date_out" class="my_field" style="width: 150px; font-size: 15px; color: #0f607f; font-weight: bold;" value="{{ filter.date_out | date:"Y-m-d" }}"/>
+            <input style="display:inline-block;" type="submit" value="Фильтр" class="btn btn-default btn-ok-filter">
         </div>
     </form>
     <hr>
+
 
     {% for post in people %}
 
@@ -165,11 +166,18 @@
                 <th>Пол</th>
                 <th>Группа</th>
                 <th>Оплата от клиента</th>
-                <th class="dell" width="10px" height="10px"><a class="delete-a" href="delete/{{ post.id }}">Удалить</a></th>
+            <td>
+                <a href="print_costumer/{{ post.id }}">Печать</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="delete-a" href="delete/{{ post.id }}">Удалить</a>
+            </td>
             </thead>
 
             <tr>
-                <td>{{ post.early_departure }}</td>
+                <td>
+                    {% if post.early_departure != None %}
+                        {{ post.early_departure }}
+                    {% endif %}
+                </td>
                 <td>{{ post.black_list }}</td>
                 <td>{{ post.note }}</td>
                 <td>{{ post.room }}</td>
@@ -177,7 +185,10 @@
                 <td>{{ post.male }}</td>
                 <td>{{ post.group }}</td>
                 <td>{{ post.pay }}</td>
-                <td><a href="edit/{{ post.id }}">Изменить</a> <a href="copy/{{ post.id }}">Копировать</a></td>
+                <td>
+                    <a href="edit/{{ post.id }}">Изменить</a>
+                    <a href="copy/{{ post.id }}">Копировать</a>
+                </td>
             </tr>
         </table>
     {% endfor %}

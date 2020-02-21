@@ -32,12 +32,14 @@ class Person(models.Model):
         ("Женский", "Женский"),
     ]
     GROUP = [
+        ('Неизвестно', 'Неизвестно'),
         ("Пенсионер", "Пенсионер"),
         ("Инвалид", "Инвалид"),
         ("Глухонемой", "Глухонемой"),
         ("Общество слепых", "Общество слепых"),
     ]
     PAY = [
+        ('Неизвестно', 'Неизвестно'),
         ('Бюджет', "Бюджет"),
         ('Наличка', "Наличка"),
         ('Перечисление', "Перечисление"),
@@ -56,7 +58,7 @@ class Person(models.Model):
     birth_year = models.CharField(default='Birth YEAR', max_length=12, help_text='Год рождения')
     passport = models.CharField(default='Passport', max_length=50, help_text='Паспорт / пенсионное')
     address = models.CharField(default='Address', max_length=200, help_text='Домашний адресс')
-    early_departure = models.DateField(default=date.today, max_length=20, null=True, blank=True)
+    early_departure = models.DateField(default='Departure', max_length=20, null=True, blank=True)
     black_list = models.CharField(max_length=20, choices=BLACK_LIST, default='black_list')
     note = models.CharField(default='Notes', max_length=500, help_text='Комментарий', null=True, blank=True)
     room = models.CharField(default='room', max_length=10, help_text='Room', null=True, blank=True)

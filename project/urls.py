@@ -52,9 +52,10 @@ from posts.views import Index, Profile, PostPost, Search, SearchTag, TagJson
 
 urlpatterns = [
     path('edit/<int:id>/', views.edit),
+    path('print_costumer/<int:id>/', views.print_costumer),
     path('copy/<int:id>/', views.copy),
     path('delete/<int:id>/', views.delete),
-    path('filter/', views.sfilter),
+    path('filter/', views.filter_peoples),
     url(r'^admin/', admin.site.urls),
     url(r'^create/', views.create),
     url(r'^$', Search.as_view()),

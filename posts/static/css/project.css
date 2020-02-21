@@ -72,12 +72,21 @@ th {
     font-size: 25px;
 }
 
-.btn-sflilter {
+.btn-ok-filter {
     background-color: #57d0ffbf;
+    font-weight: bold;
 }
 
-.btn-sflilter:hover {
+.btn-ok-filter:hover {
     background-color: #01b5fb;
+}
+
+.btn-no-filter {
+    background-color: #ff0000b8;
+}
+
+.btn-no-filter:hover {
+    background-color: #ff0000;
 }
 
 input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].btn-block {
@@ -132,6 +141,10 @@ td, th {
 
 .delete-a:hover {
     color: #ff000c;
+}
+
+.print-doc {
+    margin-top: 30px;
 }
 
 @media print {

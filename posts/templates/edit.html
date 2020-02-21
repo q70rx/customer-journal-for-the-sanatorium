@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 {% block navbar %}
-    <p class="navbar-text navbar-left">
+    <p class="navbar-text navbar-left" style="margin-top: 18px;">
         <i class="glyphicon glyphicon-user"></i> {{ person.full_name }}
     </p>
     <p class="navbar-text navbar-right">
@@ -77,10 +77,10 @@
                 <td><input type="date" name="early_departure" value="{{ person.early_departure | date:"Y-m-d" }}"/></td>
                 <td>
                     <select name="black_list" id="id_black_list">
-                        <option value="Неизвестно"{% if person.pay == 'Неизвестно' %} selected {% endif %}>Неизвестно
+                        <option value="Неизвестно"{% if person.black_list == 'Неизвестно' %} selected {% endif %}>Неизвестно
                         </option>
-                        <option value="Белый"{% if person.pay == 'Белый' %} selected {% endif %}>Белый</option>
-                        <option value="Черный"{% if person.pay == 'Черный' %} selected {% endif %}>Черный</option>
+                        <option value="Белый"{% if person.black_list == 'Белый' %} selected {% endif %}>Белый</option>
+                        <option value="Черный"{% if person.black_list == 'Черный' %} selected {% endif %}>Черный</option>
                     </select>
                 </td>
                 <td><input type="text" name="note" maxlength="500" value="{{ person.note }}"/></td>

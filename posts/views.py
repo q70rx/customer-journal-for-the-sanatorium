@@ -80,7 +80,11 @@ def edit(request, id):
             person.birth_year = request.POST.get("birth_year")
             person.passport = request.POST.get("passport")
             person.address = request.POST.get("address")
-            person.early_departure = request.POST.get("early_departure")
+            if request.POST.get("early_departure"):
+                person.early_departure = request.POST.get("early_departure")
+            else:
+                person.early_departure = None
+
             person.black_list = request.POST.get("black_list")
             person.note = request.POST.get("note")
             person.room = request.POST.get("room")
@@ -142,6 +146,13 @@ def delete(request, id):
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
+# печать клиента
+def print_costumer(request, id):
+    person = Person.objects.get(id=id)
+    dated = date.today()
+    return render(request, "print_costumer.html", {"person": person, 'date': dated})
+
+
 class PostPost(View):
     """Create Post View"""
 
@@ -160,12 +171,12 @@ class PostPost(View):
 
 
 class Search(View):
-    """ Search all posts url: 127.0.0.1:8000/search/?q=<q>"""
+    """ Index """
     def get(self, request):
         dated = date.today()
         form = SearchForm()
         forma_v = PostForm()
-        people = Person.objects.all()
+        people = Person.objects.order_by("number")
         filter_f = PostFilter()
         context = {'search': form, 'forma_v': forma_v, 'people': people, 'date': dated, 'filter': filter_f}
         return render(request, 'index.html', context)
@@ -199,14 +210,15 @@ class SearchTag(View):
         return render(request, 'search_tags.html', context)
 
 
-def sfilter(request):
+def filter_peoples(request):
     dated = date.today()
-    s_filter = PostFilter(request.POST)
-    if s_filter.is_valid():
-        male = s_filter.cleaned_data['male']
-        group = s_filter.cleaned_data['group']
-        pay = s_filter.cleaned_data['pay']
-        # mouth = s_filter.cleaned_data['mouth']
+    form_of_filter = PostFilter(request.GET)
+    if form_of_filter.is_valid():
+        male = form_of_filter.cleaned_data['male']
+        group = form_of_filter.cleaned_data['group']
+        pay = form_of_filter.cleaned_data['pay']
+        date_in = form_of_filter.cleaned_data['date_in']
+        date_out = form_of_filter.cleaned_data['date_out']
         if male != 'Все' and group != 'Все' and pay != 'Все':
             posts = Person.objects.filter(male=male, group=group, pay=pay)
         elif male != 'Все' and group != 'Все':
@@ -224,9 +236,15 @@ def sfilter(request):
         else:
             posts = Person.objects.all()
 
-        reverse_posts = reversed(posts)
-        context = {'posts': reverse_posts, 'male': male, 'group': group, 'pay': pay, 'date': dated, 'posts_all': posts}
-        return render(request, 'sfilter.html', context)
+        if form_of_filter.cleaned_data['date_in']:
+            posts = posts.filter(date_in__gte=form_of_filter.cleaned_data['date_in'])
+        if form_of_filter.cleaned_data['date_out']:
+            posts = posts.filter(date_out__lte=form_of_filter.cleaned_data['date_out'])
+
+        sorted_posts = posts.order_by("number")
+        context = {'posts': sorted_posts, 'male': male, 'group': group, 'pay': pay, 'date': dated, 'posts_all': posts,
+                   'date_in': date_in, 'date_out': date_out}
+        return render(request, 'filter_peoples.html', context)
     else:
         HttpResponseRedirect("/")
 
