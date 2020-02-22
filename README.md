@@ -21,5 +21,5 @@ Opportunities:<br>
 - fixed bugs;<br>
 - added date filter;<br>
 - added ability to print costumer;<br>
-# update v2.3
+## update v2.3
 - added report;<br>
