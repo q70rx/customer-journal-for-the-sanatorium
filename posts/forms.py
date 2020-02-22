@@ -73,6 +73,11 @@ class PostFilter(forms.Form):
     date_out = forms.DateField(widget=SelectDateWidget, required=False)
 
 
+class FilterForReport(forms.Form):
+    date_in = forms.DateField(widget=SelectDateWidget, required=False)
+    date_out = forms.DateField(widget=SelectDateWidget, required=False)
+
+
 class SearchForm(forms.Form):
     q = forms.CharField(widget=forms.TextInput(attrs={
         'size': 50,

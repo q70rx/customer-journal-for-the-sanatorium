@@ -56,6 +56,7 @@ urlpatterns = [
     path('copy/<int:id>/', views.copy),
     path('delete/<int:id>/', views.delete),
     path('filter/', views.filter_peoples),
+    path('report/', views.report),
     url(r'^admin/', admin.site.urls),
     url(r'^create/', views.create),
     url(r'^$', Search.as_view()),

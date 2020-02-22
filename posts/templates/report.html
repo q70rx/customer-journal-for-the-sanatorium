@@ -1,0 +1,359 @@
+<title>Фильтр клиентов</title>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    <p class="navbar-text navbar-right">
+        {{ date }}
+    </p>
+{% endblock %}
+
+{% block sfilter %}
+
+    <style>
+
+        th {
+        font-size: 17px;
+        padding: 5px;
+        }
+
+        @media print {
+            form {
+                display: none;
+            }
+
+            .print-doc {
+                display: none;
+            }
+
+            .navbar-brand {
+                display: none;
+            }
+        }
+
+    </style>
+
+    <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Вурнуться
+        на главную:</a>
+
+    <div class="col-md-12 column">
+        <div class="page-header">
+
+            <form method="GET" action="../report/">
+                <div align="center" style="margin-top: -50px">
+                    <h2 style="display:inline-block;"><b><em>Укажите период отчета: &nbsp; </em></b></h2> <br>
+
+                    <h3 style="display:inline-block;">
+                        Дата С:
+                        <input class="my_field"
+                               style="width: 150px; font-size: 17px; color: #0f607f; font-weight: bold;" type="date"
+                               name="date_in" value="{{ date_in | date:"Y-m-d" }}"/>
+                    </h3>
+
+                    <h3 style="display:inline-block;">
+                        Дата ПО:
+                        <input class="my_field"
+                               style="width: 150px; font-size: 17px; color: #0f607f; font-weight: bold;" type="date"
+                               name="date_out" value="{{ date_out | date:"Y-m-d" }}"/>
+                    </h3>
+
+                    <input style="display:inline-block;" type="submit" value="Фильтр"
+                           class="btn btn-default btn-ok-filter">&nbsp;&nbsp;&nbsp;
+                    <a href="../report/">
+                        <input style="display:inline-block;" type="button" value="Отмена"
+                               class="btn btn-default btn-no-filter">
+                    </a>
+                    <hr>
+                </div>
+            </form>
+
+            <h2 align="center">Список клиентов по категориям: <small> всего: {{ posts.count }} строк</small></h2>
+            <div align="center">
+
+                {% if date_in %}
+                    <h3 style="display:inline-block;">Дата С: <span
+                            class="label label-primary">{{ date_in | date:"d.m.Y" }}</span></h3>
+                {% endif %}
+
+                {% if date_out %}
+                    <h3 style="display:inline-block;">Дата ПО: <span
+                            class="label label-primary">{{ date_out | date:"d.m.Y" }}</span></h3>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <table class="well" width="97%">
+            <tr>
+                <th>{{ date.year }} г.</th>
+                <th>Январь</th>
+                <th>Февраль</th>
+                <th>Март</th>
+                <th>Апрель</th>
+                <th>Май</th>
+                <th>Июнь</th>
+                <th>Июль</th>
+                <th>Август</th>
+                <th>Сентябрь</th>
+                <th>Октябрь</th>
+                <th>Ноябрь</th>
+                <th>Декабрь</th>
+                <th>ВСЕГО</th>
+            </tr>
+            <tr>
+                <td>ВСЕГО</td>
+                <td>
+                    {% if january.count != 0 %}
+                        {{ january.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if february.count != 0 %}
+                        {{ february.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if march.count != 0 %}
+                        {{ march.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if april.count != 0 %}
+                        {{ april.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if may.count != 0 %}
+                        {{ may.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if june.count != 0 %}
+                        {{ june.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if jule.count != 0 %}
+                        {{ jule.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if august.count != 0 %}
+                        {{ august.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if september.count != 0 %}
+                        {{ september.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if october.count != 0 %}
+                        {{ october.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if november.count != 0 %}
+                        {{ november.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if december.count != 0 %}
+                        {{ december.count }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if posts.count != 0 %}
+                        {{ posts.count }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Мужчин</td>
+                <td>{{ january_male_m }}</td>
+                <td>{{ february_male_m }}</td>
+                <td>{{ march_male_m }}</td>
+                <td>{{ april_male_m }}</td>
+                <td>{{ may_male_m }}</td>
+                <td>{{ june_male_m }}</td>
+                <td>{{ jule_male_m }} </td>
+                <td>{{ august_male_m }}</td>
+                <td>{{ september_male_m }}</td>
+                <td>{{ october_male_m }}</td>
+                <td>{{ november_male_m }}</td>
+                <td>{{ december_male_m }}</td>
+                <td>{{ all_male_m }}</td>
+            </tr>
+            <tr>
+                <td>Женщин</td>
+                <td>{{ january_male_w }}</td>
+                <td>{{ february_male_w }}</td>
+                <td>{{ march_male_w }}</td>
+                <td>{{ april_male_w }}</td>
+                <td>{{ may_male_w }}</td>
+                <td>{{ june_male_w }}</td>
+                <td>{{ jule_male_w }}</td>
+                <td>{{ august_male_w }}</td>
+                <td>{{ september_male_w }}</td>
+                <td>{{ october_male_w }}</td>
+                <td>{{ november_male_w }}</td>
+                <td>{{ december_male_w }}</td>
+                <td>{{ all_male_w }}</td>
+            </tr>
+            <tr>
+                <td>Группа неизвестно</td>
+                <td>{{ january_group_none }}</td>
+                <td>{{ february_group_none }}</td>
+                <td>{{ march_group_none }}</td>
+                <td>{{ april_group_none }}</td>
+                <td>{{ may_group_none }}</td>
+                <td>{{ june_group_none }}</td>
+                <td>{{ jule_group_none }}</td>
+                <td>{{ august_group_none }}</td>
+                <td>{{ september_group_none }}</td>
+                <td>{{ october_group_none }}</td>
+                <td>{{ november_group_none }}</td>
+                <td>{{ december_group_none }}</td>
+                <td>{{ all_group_none }}</td>
+            </tr>
+            <tr>
+                <td>Инвалиды</td>
+                <td>{{ january_group_invalid }}</td>
+                <td>{{ february_group_invalid }}</td>
+                <td>{{ march_group_invalid }}</td>
+                <td>{{ april_group_invalid }}</td>
+                <td>{{ may_group_invalid }}</td>
+                <td>{{ june_group_invalid }}</td>
+                <td>{{ jule_group_invalid }}</td>
+                <td>{{ august_group_invalid }}</td>
+                <td>{{ september_group_invalid }}</td>
+                <td>{{ october_group_invalid }}</td>
+                <td>{{ november_group_invalid }}</td>
+                <td>{{ december_group_invalid }}</td>
+                <td>{{ all_group_invalid }}</td>
+            </tr>
+            <tr>
+                <td>Пенсионеры</td>
+                <td>{{ january_group_pension }}</td>
+                <td>{{ february_group_pension }}</td>
+                <td>{{ march_group_pension }}</td>
+                <td>{{ april_group_pension }}</td>
+                <td>{{ may_group_pension }}</td>
+                <td>{{ june_group_pension }}</td>
+                <td>{{ jule_group_pension }}</td>
+                <td>{{ august_group_pension }}</td>
+                <td>{{ september_group_pension }}</td>
+                <td>{{ october_group_pension }}</td>
+                <td>{{ november_group_pension }}</td>
+                <td>{{ december_group_pension }}</td>
+                <td>{{ all_group_pension }}</td>
+            </tr>
+            <tr>
+                <td>Общество слепых</td>
+                <td>{{ january_group_slepie }}</td>
+                <td>{{ february_group_slepie }}</td>
+                <td>{{ march_group_slepie }}</td>
+                <td>{{ april_group_slepie }}</td>
+                <td>{{ may_group_slepie }}</td>
+                <td>{{ june_group_slepie }}</td>
+                <td>{{ jule_group_slepie }}</td>
+                <td>{{ august_group_slepie }}</td>
+                <td>{{ september_group_slepie }}</td>
+                <td>{{ october_group_slepie }}</td>
+                <td>{{ november_group_slepie }}</td>
+                <td>{{ december_group_slepie }}</td>
+                <td>{{ all_group_slepie }}</td>
+            </tr>
+            <tr>
+                <td>Глухонемые</td>
+                <td>{{ january_group_gluhie }}</td>
+                <td>{{ february_group_gluhie }}</td>
+                <td>{{ march_group_gluhie }}</td>
+                <td>{{ april_group_gluhie }}</td>
+                <td>{{ may_group_gluhie }}</td>
+                <td>{{ june_group_gluhie }}</td>
+                <td>{{ jule_group_gluhie }}</td>
+                <td>{{ august_group_gluhie }}</td>
+                <td>{{ september_group_gluhie }}</td>
+                <td>{{ october_group_gluhie }}</td>
+                <td>{{ november_group_gluhie }}</td>
+                <td>{{ december_group_gluhie }}</td>
+                <td>{{ all_group_gluhie }}</td>
+            </tr>
+            <tr>
+                <td>Оплата неизвестно</td>
+                <td>{{ january_pay_none }}</td>
+                <td>{{ february_pay_none }}</td>
+                <td>{{ march_pay_none }}</td>
+                <td>{{ april_pay_none }}</td>
+                <td>{{ may_pay_none }}</td>
+                <td>{{ june_pay_none }}</td>
+                <td>{{ jule_pay_none }}</td>
+                <td>{{ august_pay_none }}</td>
+                <td>{{ september_pay_none }}</td>
+                <td>{{ october_pay_none }}</td>
+                <td>{{ november_pay_none }}</td>
+                <td>{{ december_pay_none }}</td>
+                <td>{{ all_pay_none }}</td>
+            </tr>
+            <tr>
+                <td>Бюджет</td>
+                <td>{{ january_pay_budget }}</td>
+                <td>{{ february_pay_budget }}</td>
+                <td>{{ march_pay_budget }}</td>
+                <td>{{ april_pay_budget }}</td>
+                <td>{{ may_pay_budget }}</td>
+                <td>{{ june_pay_budget }}</td>
+                <td>{{ jule_pay_budget }}</td>
+                <td>{{ august_pay_budget }}</td>
+                <td>{{ september_budget }}</td>
+                <td>{{ october_budget }}</td>
+                <td>{{ november_budget }}</td>
+                <td>{{ december_budget }}</td>
+                <td>{{ all_pay_budget }}</td>
+            </tr>
+            <tr>
+                <td>Н / Р</td>
+                <td>{{ january_pay_nal }}</td>
+                <td>{{ february_pay_nal }}</td>
+                <td>{{ march_pay_nal }}</td>
+                <td>{{ april_pay_nal }}</td>
+                <td>{{ may_pay_nal }}</td>
+                <td>{{ june_pay_nal }}</td>
+                <td>{{ jule_pay_nal }}</td>
+                <td>{{ august_pay_nal }}</td>
+                <td>{{ september_nal }}</td>
+                <td>{{ october_nal }}</td>
+                <td>{{ november_nal }}</td>
+                <td>{{ december_nal }}</td>
+                <td>{{ all_pay_nal }}</td>
+            </tr>
+            <tr>
+                <td>По перечислению</td>
+                <td>{{ january_pay_pall }}</td>
+                <td>{{ february_pay_pall }}</td>
+                <td>{{ march_pay_pall }}</td>
+                <td>{{ april_pay_pall }}</td>
+                <td>{{ may_pay_pall }}</td>
+                <td>{{ june_pay_pall }}</td>
+                <td>{{ jule_pay_pall }}</td>
+                <td>{{ august_pay_pall }}</td>
+                <td>{{ september_pall }}</td>
+                <td>{{ october_pall }}</td>
+                <td>{{ november_pall }}</td>
+                <td>{{ december_pall }}</td>
+                <td>{{ all_pay_pall }}</td>
+            </tr>
+        </table>
+
+        <a class="print-doc btn btn-default btn-lg btn-block btn_sub" href="javascript:(print());">Распечатать весь
+            список</a><br><br><br>
+        {% if not posts %}
+            <div class="page-header">
+                <h1 align="center">ФИО не найденно</h1>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

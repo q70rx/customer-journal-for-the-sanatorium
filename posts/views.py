@@ -3,11 +3,10 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.template.loader import render_to_string
 import json
 from datetime import date
-from django.http import HttpResponse
 from django.views import View
 from .models import Post, HashTag, Person
 from user_profile.models import User
-from posts.forms import PostForm, SearchForm, SearchTagForm, PostFilter
+from posts.forms import PostForm, SearchForm, SearchTagForm, PostFilter, FilterForReport
 from django.http import HttpResponse
 
 
@@ -178,7 +177,8 @@ class Search(View):
         forma_v = PostForm()
         people = Person.objects.order_by("number")
         filter_f = PostFilter()
-        context = {'search': form, 'forma_v': forma_v, 'people': people, 'date': dated, 'filter': filter_f}
+        form_for_report = FilterForReport()
+        context = {'search': form, 'forma_v': forma_v, 'people': people, 'date': dated, 'filter': filter_f, 'form_for_report': form_for_report}
         return render(request, 'index.html', context)
 
     def post(self, request):
@@ -210,6 +210,7 @@ class SearchTag(View):
         return render(request, 'search_tags.html', context)
 
 
+# фильтр всех клиентов
 def filter_peoples(request):
     dated = date.today()
     form_of_filter = PostFilter(request.GET)
@@ -236,15 +237,297 @@ def filter_peoples(request):
         else:
             posts = Person.objects.all()
 
-        if form_of_filter.cleaned_data['date_in']:
-            posts = posts.filter(date_in__gte=form_of_filter.cleaned_data['date_in'])
-        if form_of_filter.cleaned_data['date_out']:
-            posts = posts.filter(date_out__lte=form_of_filter.cleaned_data['date_out'])
+        if date_in:
+            posts = posts.filter(date_in__gte=date_in)
+        if date_out:
+            posts = posts.filter(date_out__lte=date_out)
 
         sorted_posts = posts.order_by("number")
         context = {'posts': sorted_posts, 'male': male, 'group': group, 'pay': pay, 'date': dated, 'posts_all': posts,
                    'date_in': date_in, 'date_out': date_out}
         return render(request, 'filter_peoples.html', context)
+    else:
+        HttpResponseRedirect("/")
+
+
+# фильтр для отчета
+def report(request):
+    dated = date.today()
+    form_for_report = FilterForReport(request.GET)
+    if form_for_report.is_valid():
+        date_in = form_for_report.cleaned_data['date_in']
+        date_out = form_for_report.cleaned_data['date_out']
+
+        if date_in and date_out:
+            posts = Person.objects.filter(date_in__gte=date_in, date_in__lte=date_out)
+        elif date_in:
+            posts = Person.objects.filter(date_in__gte=date_in)
+        elif date_out:
+            posts = Person.objects.filter(date_in__lte=date_out)
+        else:
+            posts = Person.objects.all()
+
+        january = posts.filter(date_in__month='01')
+        february = posts.filter(date_in__month='02')
+        march = posts.filter(date_in__month='03')
+        april = posts.filter(date_in__month='04')
+        may = posts.filter(date_in__month='05')
+        june = posts.filter(date_in__month='06')
+        jule = posts.filter(date_in__month='07')
+        august = posts.filter(date_in__month='08')
+        september = posts.filter(date_in__month='09')
+        october = posts.filter(date_in__month='10')
+        november = posts.filter(date_in__month='11')
+        december = posts.filter(date_in__month='12')
+
+        def male_m(month):
+            month = month.filter(male='Мужской')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def male_w(month):
+            month = month.filter(male='Женский')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def group_none(month):
+            month = month.filter(group='Неизвестно')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def group_invalid(month):
+            month = month.filter(group='Инвалид')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def group_pension(month):
+            month = month.filter(group='Пенсионер')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def group_slepie(month):
+            month = month.filter(group='Общество слепых')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def group_gluhie(month):
+            month = month.filter(group='Глухонемой')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def pay_none(month):
+            month = month.filter(pay='Неизвестно')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def pay_budget(month):
+            month = month.filter(pay='Бюджет')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def pay_nal(month):
+            month = month.filter(pay='Наличка')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        def pay_pall(month):
+            month = month.filter(pay='Перечисление')
+            if month:
+                return month.count
+            else:
+                return ''
+
+        context = {'posts': posts,
+                   'date': dated,
+                   'date_in': date_in,
+                   'date_out': date_out,
+                   'january': january,
+                   'february': february,
+                   'march': march,
+                   'april': april,
+                   'may': may,
+                   'june': june,
+                   'jule': jule,
+                   'august': august,
+                   'september': september,
+                   'october': october,
+                   'november': november,
+                   'december': december,
+
+                   'january_male_m': male_m(january),
+                   'january_male_w': male_w(january),
+                   'february_male_m': male_m(february),
+                   'february_male_w': male_w(february),
+                   'march_male_m': male_m(march),
+                   'march_male_w': male_w(march),
+                   'april_male_m': male_m(april),
+                   'april_male_w': male_w(april),
+                   'may_male_m': male_m(may),
+                   'may_male_w': male_w(may),
+                   'june_male_m': male_m(june),
+                   'june_male_w': male_w(june),
+                   'jule_male_m': male_m(jule),
+                   'jule_male_w': male_w(jule),
+                   'august_male_m': male_m(august),
+                   'august_male_w': male_w(august),
+                   'september_male_m': male_m(september),
+                   'september_male_w': male_w(september),
+                   'october_male_m': male_m(october),
+                   'october_male_w': male_w(october),
+                   'november_male_m': male_m(november),
+                   'november_male_w': male_w(november),
+                   'december_male_m': male_m(december),
+                   'december_male_w': male_w(december),
+                   'all_male_m': male_m(posts),
+                   'all_male_w': male_w(posts),
+
+                   'january_group_none': group_none(january),
+                   'february_group_none': group_none(february),
+                   'march_group_none': group_none(march),
+                   'april_group_none': group_none(april),
+                   'may_group_none': group_none(may),
+                   'june_group_none': group_none(june),
+                   'jule_group_none': group_none(jule),
+                   'august_group_none': group_none(august),
+                   'september_group_none': group_none(september),
+                   'october_group_none': group_none(october),
+                   'november_group_none': group_none(november),
+                   'december_group_none': group_none(december),
+                   'all_group_none': group_none(posts),
+
+                   'january_group_invalid': group_invalid(january),
+                   'february_group_invalid': group_invalid(february),
+                   'march_group_invalid': group_invalid(march),
+                   'april_group_invalid': group_invalid(april),
+                   'may_group_invalid': group_invalid(may),
+                   'june_group_invalid': group_invalid(june),
+                   'jule_group_invalid': group_invalid(jule),
+                   'august_group_invalid': group_invalid(august),
+                   'september_group_invalid': group_invalid(september),
+                   'october_group_invalid': group_invalid(october),
+                   'november_group_invalid': group_invalid(november),
+                   'december_group_invalid': group_invalid(december),
+                   'all_group_invalid': group_invalid(posts),
+
+                   'january_group_pension': group_pension(january),
+                   'february_group_pension': group_pension(february),
+                   'march_group_pension': group_pension(march),
+                   'april_group_pension': group_pension(april),
+                   'may_group_pension': group_pension(may),
+                   'june_group_pension': group_pension(june),
+                   'jule_group_pension': group_pension(jule),
+                   'august_group_pension': group_pension(august),
+                   'september_group_pension': group_pension(september),
+                   'october_group_pension': group_pension(october),
+                   'november_group_pension': group_pension(november),
+                   'december_group_pension': group_pension(december),
+                   'all_group_pension': group_pension(posts),
+
+                   'january_group_slepie': group_slepie(january),
+                   'february_group_slepie': group_slepie(february),
+                   'march_group_slepie': group_slepie(march),
+                   'april_group_slepie': group_slepie(april),
+                   'may_group_slepie': group_slepie(may),
+                   'june_group_slepie': group_slepie(june),
+                   'jule_group_slepie': group_slepie(jule),
+                   'august_group_slepie': group_slepie(august),
+                   'september_group_slepie': group_slepie(september),
+                   'october_group_slepie': group_slepie(october),
+                   'november_group_slepie': group_slepie(november),
+                   'december_group_slepie': group_slepie(december),
+                   'all_group_slepie': group_slepie(posts),
+
+                   'january_group_gluhie': group_gluhie(january),
+                   'february_group_gluhie': group_gluhie(february),
+                   'march_group_gluhie': group_gluhie(march),
+                   'april_group_gluhie': group_gluhie(april),
+                   'may_group_gluhie': group_gluhie(may),
+                   'june_group_gluhie': group_gluhie(june),
+                   'jule_group_gluhie': group_gluhie(jule),
+                   'august_group_gluhie': group_gluhie(august),
+                   'september_group_gluhie': group_gluhie(september),
+                   'october_group_gluhie': group_gluhie(october),
+                   'november_group_gluhie': group_gluhie(november),
+                   'december_group_gluhie': group_gluhie(december),
+                   'all_group_gluhie': group_gluhie(posts),
+
+                   'january_pay_none': pay_none(january),
+                   'february_pay_none': pay_none(february),
+                   'march_pay_none': pay_none(march),
+                   'april_pay_none': pay_none(april),
+                   'may_pay_none': pay_none(may),
+                   'june_pay_none': pay_none(june),
+                   'jule_pay_none': pay_none(jule),
+                   'august_pay_none': pay_none(august),
+                   'september_pay_none': pay_none(september),
+                   'october_pay_none': pay_none(october),
+                   'november_pay_none': pay_none(november),
+                   'december_pay_none': pay_none(december),
+                   'all_pay_none': pay_none(posts),
+
+                   'january_pay_budget': pay_budget(january),
+                   'february_pay_budget': pay_budget(february),
+                   'march_pay_budget': pay_budget(march),
+                   'april_pay_budget': pay_budget(april),
+                   'may_pay_budget': pay_budget(may),
+                   'june_pay_budget': pay_budget(june),
+                   'jule_pay_budget': pay_budget(jule),
+                   'august_pay_budget': pay_budget(august),
+                   'september_pay_budget': pay_budget(september),
+                   'october_pay_budget': pay_budget(october),
+                   'november_pay_budget': pay_budget(november),
+                   'december_pay_budget': pay_budget(december),
+                   'all_pay_budget': pay_budget(posts),
+
+                   'january_pay_nal': pay_nal(january),
+                   'february_pay_nal': pay_nal(february),
+                   'march_pay_nal': pay_nal(march),
+                   'april_pay_nal': pay_nal(april),
+                   'may_pay_nal': pay_nal(may),
+                   'june_pay_nal': pay_nal(june),
+                   'jule_pay_nal': pay_nal(jule),
+                   'august_pay_nal': pay_nal(august),
+                   'september_pay_nal': pay_nal(september),
+                   'october_pay_nal': pay_nal(october),
+                   'november_pay_nal': pay_nal(november),
+                   'december_pay_nal': pay_nal(december),
+                   'all_pay_nal': pay_nal(posts),
+
+                   'january_pay_pall': pay_pall(january),
+                   'february_pay_pall': pay_pall(february),
+                   'march_pay_pall': pay_pall(march),
+                   'april_pay_pall': pay_pall(april),
+                   'may_pay_pall': pay_pall(may),
+                   'june_pay_pall': pay_pall(june),
+                   'jule_pay_pall': pay_pall(jule),
+                   'august_pay_pall': pay_pall(august),
+                   'september_pay_pall': pay_pall(september),
+                   'october_pay_pall': pay_pall(october),
+                   'november_pay_pall': pay_pall(november),
+                   'december_pay_pall': pay_pall(december),
+                   'all_pay_pall': pay_pall(posts),
+                   }
+        return render(request, 'report.html', context)
     else:
         HttpResponseRedirect("/")
 
