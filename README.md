@@ -16,3 +16,10 @@ Opportunities:<br>
   - изменение / удаление клиента из БД;<br>
   - поиск по ФИО клиента;<br>
   - печать списка клиентов; <br>
+  
+  ## update v2.2
+- fixed bugs;<br>
+- added date filter;<br>
+- added ability to print costumer;<br>
+# update v2.3
+- added report;<br>
